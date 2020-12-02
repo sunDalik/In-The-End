@@ -1,6 +1,6 @@
 import * as THREE from "three";
-import {camera} from "./setup";
 import {Vector3} from "three";
+import {camera, renderer, scene} from "./setup";
 
 export class Player extends THREE.Mesh {
     constructor() {
@@ -8,24 +8,46 @@ export class Player extends THREE.Mesh {
         const material = new THREE.MeshBasicMaterial({color: 0xffffff});
         super(geometry, material);
         this.speed = 0.1;
+        this.cameraRotationSpeed = 0.05;
         this.movingForward = false;
         this.movingBackwards = false;
         this.movingLeft = false;
         this.movingRight = false;
+        this.movingCameraLeft = false;
+        this.movingCameraRight = false;
+        this.direction = new Vector3();
         window.addEventListener("keydown", e => this.onKeyDown(e));
         window.addEventListener("keyup", e => this.onKeyUp(e));
         this.update();
     }
 
     update() {
-        const direction = new Vector3();
-        direction.z = this.movingBackwards - this.movingForward;
-        direction.x = this.movingRight - this.movingLeft;
-        direction.normalize();
-        this.position.x += direction.x * this.speed;
-        this.position.z += direction.z * this.speed;
-        camera.position.x += direction.x * this.speed;
-        camera.position.z += direction.z * this.speed;
+        this.direction.z = this.movingBackwards - this.movingForward;
+        this.direction.x = this.movingRight - this.movingLeft;
+        this.direction.normalize();
+        this.rotateY((this.movingCameraLeft - this.movingCameraRight) * this.cameraRotationSpeed);
+
+        //const cameraDirection = camera.getWorldDirection();
+        if (this.direction.z !== 0) {
+            const dir = this.getWorldDirection();
+            console.log(dir);
+            const xmove = this.direction.z * dir.x * this.speed;
+            const zmove = this.direction.z * dir.z * this.speed;
+            this.position.x += xmove;
+            this.position.z += zmove;
+        }
+        if (this.direction.x !== 0) {
+            const dir = this.getWorldDirection();
+            const axis = new THREE.Vector3(0, 1, 0);
+            const angle = Math.PI / 2;
+            dir.applyAxisAngle(axis, angle);
+
+            const xmove = this.direction.x * dir.x * this.speed;
+            const zmove = this.direction.x * dir.z * this.speed;
+            this.position.x += xmove;
+            this.position.z += zmove;
+        }
+        renderer.render(scene, camera); // do we need it?
         window.requestAnimationFrame(() => this.update());
     }
 
@@ -43,6 +65,12 @@ export class Player extends THREE.Mesh {
             case "KeyD":
                 this.movingRight = true;
                 break;
+            case "KeyQ":
+                this.movingCameraLeft = true;
+                break;
+            case "KeyE":
+                this.movingCameraRight = true;
+                break;
         }
     }
 
@@ -59,6 +87,12 @@ export class Player extends THREE.Mesh {
                 break;
             case "KeyD":
                 this.movingRight = false;
+                break;
+            case "KeyQ":
+                this.movingCameraLeft = false;
+                break;
+            case "KeyE":
+                this.movingCameraRight = false;
                 break;
         }
     }
