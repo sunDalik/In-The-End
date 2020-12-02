@@ -29,10 +29,8 @@ export class Player extends THREE.Mesh {
         this.direction.normalize();
         this.rotateY((this.movingCameraLeft - this.movingCameraRight) * this.cameraRotationSpeed);
 
-        //const cameraDirection = camera.getWorldDirection();
         if (this.direction.z !== 0) {
             const dir = this.getWorldDirection();
-            console.log(dir);
             const xmove = this.direction.z * dir.x * this.speed;
             const zmove = this.direction.z * dir.z * this.speed;
             this.position.x += xmove;
