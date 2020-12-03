@@ -42,7 +42,7 @@ export class World extends THREE.Scene {
         this.fog = new THREE.Fog(color, 4, 35);
         this.background = color;
 
-        const ambientLight = new THREE.AmbientLight(color, 0.1);
+        const ambientLight = new THREE.AmbientLight(color, 0.07);
         world.add(ambientLight);
     }
 

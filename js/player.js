@@ -12,14 +12,17 @@ export class Player extends THREE.Mesh {
         this.add(camera);
         this.castShadow = true;
         this.receiveShadow = true;
+
         this.speed = 0.1;
-        this.cameraRotationSpeed = 0.05;
         this.movingForward = false;
         this.movingBackwards = false;
         this.movingLeft = false;
         this.movingRight = false;
+
+        this.cameraRotationSpeed = 0.05;
         this.movingCameraLeft = false;
         this.movingCameraRight = false;
+
         this.direction = new Vector3();
         this.lastChunk = new Vector3(0, 0, 0);
         window.addEventListener("keydown", e => this.onKeyDown(e));
@@ -51,6 +54,25 @@ export class Player extends THREE.Mesh {
             this.position.x += xmove;
             this.position.z += zmove;
         }
+
+
+        const cameraFovStep = 0.7;
+        const cameraWalkFov = 71;
+        const cameraNormalFov = 75;
+        if (this.direction.x !== 0 || this.direction.z !== 0) {
+            if (this.camera.fov > cameraWalkFov) {
+                this.camera.fov -= cameraFovStep;
+                if (this.camera.fov < cameraWalkFov) this.camera.fov = cameraWalkFov;
+                this.camera.updateProjectionMatrix();
+            }
+        } else {
+            if (this.camera.fov < cameraNormalFov) {
+                this.camera.fov += cameraFovStep;
+                if (this.camera.fov > cameraNormalFov) this.camera.fov = cameraNormalFov;
+                this.camera.updateProjectionMatrix();
+            }
+        }
+
         this.updateChunks();
         renderer.render(world, this.camera); // do we need it?
         window.requestAnimationFrame(() => this.update());
