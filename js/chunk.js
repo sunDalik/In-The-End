@@ -1,6 +1,6 @@
 import * as THREE from "three";
 import {loadResource, mtlLoader, objLoader} from "./obj_loader";
-import {randomInt} from "./random_utils";
+import {randomFloat, randomInt} from "./random_utils";
 
 export const chunkSize = 20;
 
@@ -22,22 +22,14 @@ export class Chunk extends THREE.Mesh {
     }
 
     putDecorations() {
-        loadResource('models/twig.obj', object => {
-
-        });
-
-
-        mtlLoader.load("models/twig.mtl", materials => {
-
-            materials.preload();
-            objLoader.setMaterials(materials);
-            objLoader.load('models/twig.obj', object => {
-                this.add(object);
-                object.rotateX(Math.PI / 2);
-                object.position.x = randomInt(-chunkSize / 2, chunkSize / 2);
-
-            });
-
+        objLoader.load('models/twig.obj', object => {
+            this.add(object);
+            object.children[0].material = new THREE.MeshPhongMaterial({color: 0x57503f});
+            object.castShadow = true;
+            object.receiveShadow = true;
+            object.rotateX(Math.PI / 2);
+            object.position.x = randomFloat(-(chunkSize - 1) / 2, (chunkSize - 1) / 2);
+            object.rotation.y = randomFloat(0, Math.PI * 2);
         });
     }
 }
