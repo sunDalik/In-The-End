@@ -1,6 +1,6 @@
 import * as THREE from "three";
 import {Vector3} from "three";
-import {objLoader} from "./obj_loader";
+import {MODELS, objLoader} from "./obj_loader";
 import {randomFloat, randomInt} from "./random_utils";
 import {callTimes, getSize} from "./utils";
 
@@ -40,60 +40,53 @@ export class Chunk extends THREE.Mesh {
     }
 
     placeTwig() {
-        objLoader.load('models/twig.obj', object => {
-            this.add(object);
-            object.children[0].material = new THREE.MeshPhongMaterial({color: 0x57503f});
-            object.children[0].castShadow = true;
-            object.children[0].receiveShadow = true;
-            this.randomizeObject(object);
-            this.randomizeScale(object, 0.6, 1.4);
-        });
+        const object = MODELS.twig.clone();
+        this.add(object);
+        object.children[0].material = new THREE.MeshPhongMaterial({color: 0x57503f});
+        object.children[0].castShadow = true;
+        object.children[0].receiveShadow = true;
+        this.randomizeObject(object);
+        this.randomizeScale(object, 0.6, 1.4);
     }
 
     placeTwig2() {
-        objLoader.load('models/twig_2.obj', object => {
-            this.add(object);
-            object.children[0].material = new THREE.MeshPhongMaterial({color: 0x57503f});
-            object.children[0].castShadow = true;
-            object.children[0].receiveShadow = true;
-            this.randomizeObject(object);
-            this.randomizeScale(object, 0.6, 1.4);
-        });
+        const object = MODELS.twig_2.clone();
+        this.add(object);
+        object.children[0].material = new THREE.MeshPhongMaterial({color: 0x57503f});
+        object.children[0].castShadow = true;
+        object.children[0].receiveShadow = true;
+        this.randomizeObject(object);
+        this.randomizeScale(object, 0.6, 1.4);
     }
 
     placeGrave() {
-        const url = Math.random() < 0.5 ? 'models/grave_cross.obj' : "models/grave_broken.obj";
-        objLoader.load(url, object => {
-            this.add(object);
-            object.children[0].material = new THREE.MeshPhongMaterial({color: 0x3f404a});
-            object.children[0].castShadow = true;
-            object.children[0].receiveShadow = true;
-            this.randomizeObject(object);
-            this.randomizeScale(object, 1.1, 1.3);
-        });
+        const object = Math.random() < 0.5 ? MODELS.grave_cross.clone() : MODELS.grave_broken.clone();
+        this.add(object);
+        object.children[0].material = new THREE.MeshPhongMaterial({color: 0x3f404a});
+        object.children[0].castShadow = true;
+        object.children[0].receiveShadow = true;
+        this.randomizeObject(object);
+        this.randomizeScale(object, 1.1, 1.3);
     }
 
     placeRocks() {
-        objLoader.load("models/rock_small.obj", object => {
-            this.add(object);
-            object.children[0].material = new THREE.MeshPhongMaterial({color: 0x605f63});
-            object.children[0].castShadow = true;
-            object.children[0].receiveShadow = true;
-            this.randomizeObject(object);
-            this.randomizeScale(object, 0.5, 1.2);
-        });
+        const object = MODELS.rock_small.clone();
+        this.add(object);
+        object.children[0].material = new THREE.MeshPhongMaterial({color: 0x605f63});
+        object.children[0].castShadow = true;
+        object.children[0].receiveShadow = true;
+        this.randomizeObject(object);
+        this.randomizeScale(object, 0.5, 1.2);
     }
 
     placeBones() {
-        const url = Math.random() < 0.5 ? 'models/bone_skull.obj' : "models/bone_spine.obj";
-        objLoader.load(url, object => {
-            this.add(object);
-            object.children[0].material = new THREE.MeshPhongMaterial({color: 0xe6e4d5});
-            object.children[0].castShadow = true;
-            object.children[0].receiveShadow = true;
-            this.randomizeObject(object);
-            this.randomizeScale(object, 0.35, 1.2);
-        });
+        const object = Math.random() < 0.5 ? MODELS.bone_skull.clone() : MODELS.bone_spine.clone();
+        this.add(object);
+        object.children[0].material = new THREE.MeshPhongMaterial({color: 0xe6e4d5});
+        object.children[0].castShadow = true;
+        object.children[0].receiveShadow = true;
+        this.randomizeObject(object);
+        this.randomizeScale(object, 0.35, 1.2);
     }
 
     randomizeObject(object) {

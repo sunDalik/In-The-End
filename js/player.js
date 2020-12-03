@@ -10,6 +10,9 @@ export class Player extends THREE.Mesh {
         super(geometry, material);
         this.camera = camera;
         this.add(camera);
+        camera.position.y = 2.5;
+        camera.position.z = 3.5;
+        camera.rotation.x = -Math.PI / 8;
         this.castShadow = true;
         this.receiveShadow = true;
 

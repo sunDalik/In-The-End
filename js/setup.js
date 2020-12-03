@@ -2,6 +2,7 @@ import * as THREE from "three";
 import {Player} from "./player";
 import {Chunk, chunkSize} from "./chunk";
 import {World} from "./world";
+import {loadAll} from "./obj_loader";
 
 
 export const world = new World();
@@ -17,20 +18,18 @@ document.body.appendChild(renderer.domElement);
 //animateScene(cube);
 
 
-const player = new Player(camera);
-player.position.x = chunkSize / 2;
-player.position.z = chunkSize / 2;
-world.init(player);
-
-camera.position.y = 2.5;
-camera.position.z = 3.5;
-camera.rotation.x = -Math.PI / 8;
-
 window.addEventListener('resize', () => {
     camera.aspect = window.innerWidth / window.innerHeight;
     camera.updateProjectionMatrix();
     renderer.setSize(window.innerWidth, window.innerHeight);
 });
+
+const player = new Player(camera);
+player.position.x = chunkSize / 2;
+player.position.z = chunkSize / 2;
+
+loadAll(() => world.init(player));
+
 
 export function destroyObject(object) {
     for (let i = object.children.length - 1; i >= 0; i--) {
