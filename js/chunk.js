@@ -42,7 +42,7 @@ export class Chunk extends THREE.Mesh {
     placeTwig() {
         const object = MODELS.twig.clone();
         this.add(object);
-        object.children[0].material = new THREE.MeshPhongMaterial({color: 0x57503f});
+        object.children[0].material = new THREE.MeshLambertMaterial({color: 0x948666});
         object.children[0].castShadow = true;
         object.children[0].receiveShadow = true;
         this.randomizeObject(object);
@@ -52,7 +52,7 @@ export class Chunk extends THREE.Mesh {
     placeTwig2() {
         const object = MODELS.twig_2.clone();
         this.add(object);
-        object.children[0].material = new THREE.MeshPhongMaterial({color: 0x57503f});
+        object.children[0].material = new THREE.MeshLambertMaterial({color: 0x948666});
         object.children[0].castShadow = true;
         object.children[0].receiveShadow = true;
         this.randomizeObject(object);

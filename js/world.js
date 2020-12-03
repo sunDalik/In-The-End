@@ -32,6 +32,8 @@ export class World extends THREE.Scene {
         this.playerLight.position.z = this.player.position.z;
         this.playerLight.position.y = this.player.position.y + 14;
         this.playerLight.castShadow = true;
+        this.playerLight.shadow.mapSize.width = 1024;
+        this.playerLight.shadow.mapSize.height = 1024;
         world.add(this.playerLight.target);
         this.playerLight.angle = Math.PI / 5.5;
         this.playerLight.penumbra = 0.1;
