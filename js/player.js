@@ -1,12 +1,14 @@
 import * as THREE from "three";
 import {Vector3} from "three";
-import {camera, playerLight, renderer, scene} from "./setup";
+import {renderer, world} from "./setup";
 
 export class Player extends THREE.Mesh {
-    constructor() {
+    constructor(camera) {
         const geometry = new THREE.ConeGeometry();
         const material = new THREE.MeshPhongMaterial({color: 0xffffff});
         super(geometry, material);
+        this.camera = camera;
+        this.add(camera);
         this.castShadow = true;
         this.receiveShadow = true;
         this.speed = 0.1;
@@ -48,8 +50,7 @@ export class Player extends THREE.Mesh {
             this.position.z += zmove;
         }
 
-        playerLight.position.lerp(new Vector3(this.position.x, playerLight.position.y, this.position.z), 0.02);
-        renderer.render(scene, camera); // do we need it?
+        renderer.render(world, this.camera); // do we need it?
         window.requestAnimationFrame(() => this.update());
     }
 
