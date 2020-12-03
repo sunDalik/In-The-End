@@ -27,10 +27,7 @@ export class World extends THREE.Scene {
     }
 
     initLighting() {
-        const ambientLight = new THREE.AmbientLight(0xffffff, 0.15);
-        world.add(ambientLight);
-
-        this.playerLight = new THREE.SpotLight(0xFFFFFF, 1, 6);
+        this.playerLight = new THREE.SpotLight(0xFFFFFF, 1.1, 6);
         this.playerLight.position.x = this.player.position.x;
         this.playerLight.position.z = this.player.position.z;
         this.playerLight.position.y = this.player.position.y + 10;
@@ -43,6 +40,9 @@ export class World extends THREE.Scene {
         const color = new THREE.Color(0xab9d59);
         this.fog = new THREE.Fog(color, 4, 35);
         this.background = color;
+
+        const ambientLight = new THREE.AmbientLight(color, 0.1);
+        world.add(ambientLight);
     }
 
     update() {

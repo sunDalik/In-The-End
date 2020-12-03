@@ -32,7 +32,11 @@ export class Chunk extends THREE.Mesh {
     }
 
     putDecorations() {
-        callTimes(() => this.placeTwig(), randomInt(1, 4));
+        callTimes(() => this.placeTwig(), randomInt(2, 6));
+        callTimes(() => this.placeTwig2(), randomInt(0, 2));
+        callTimes(() => this.placeGrave(), randomInt(2, 4));
+        callTimes(() => this.placeRocks(), randomInt(2, 4));
+        callTimes(() => this.placeBones(), randomInt(2, 4));
     }
 
     placeTwig() {
@@ -41,18 +45,67 @@ export class Chunk extends THREE.Mesh {
             object.children[0].material = new THREE.MeshPhongMaterial({color: 0x57503f});
             object.castShadow = true;
             object.receiveShadow = true;
-            object.rotateX(Math.PI / 2);
             this.randomizeObject(object);
+            this.randomizeScale(object, 0.6, 1.4);
+        });
+    }
+
+    placeTwig2() {
+        objLoader.load('models/twig_2.obj', object => {
+            this.add(object);
+            object.children[0].material = new THREE.MeshPhongMaterial({color: 0x57503f});
+            object.castShadow = true;
+            object.receiveShadow = true;
+            this.randomizeObject(object);
+            this.randomizeScale(object, 0.6, 1.4);
+        });
+    }
+
+    placeGrave() {
+        const url = Math.random() < 0.5 ? 'models/grave_cross.obj' : "models/grave_broken.obj";
+        objLoader.load(url, object => {
+            this.add(object);
+            object.children[0].material = new THREE.MeshPhongMaterial({color: 0x3f404a});
+            object.castShadow = true;
+            object.receiveShadow = true;
+            this.randomizeObject(object);
+            this.randomizeScale(object, 1.1, 1.3);
+        });
+    }
+
+    placeRocks() {
+        objLoader.load("models/rock_small.obj", object => {
+            this.add(object);
+            object.children[0].material = new THREE.MeshPhongMaterial({color: 0x605f63});
+            object.castShadow = true;
+            object.receiveShadow = true;
+            this.randomizeObject(object);
+            this.randomizeScale(object, 0.5, 1.2);
+        });
+    }
+
+    placeBones() {
+        const url = Math.random() < 0.5 ? 'models/bone_skull.obj' : "models/bone_spine.obj";
+        objLoader.load(url, object => {
+            this.add(object);
+            object.children[0].material = new THREE.MeshPhongMaterial({color: 0xe6e4d5});
+            object.castShadow = true;
+            object.receiveShadow = true;
+            this.randomizeObject(object);
+            this.randomizeScale(object, 0.2, 1.2);
         });
     }
 
     randomizeObject(object) {
-        // rotated
+        object.rotateX(Math.PI / 2);
+
         object.position.x = randomFloat(-(chunkSize - 2) / 2, (chunkSize - 2) / 2);
         object.position.y = randomFloat(-(chunkSize - 2) / 2, (chunkSize - 2) / 2);
         object.rotation.y = randomFloat(0, Math.PI * 2);
+    }
 
-        object.scale.x = randomFloat(0.6, 1.4);
+    randomizeScale(object, min, max) {
+        object.scale.x = randomFloat(min, max);
         object.scale.y = object.scale.x + randomFloat(-0.15, 0.15);
         object.scale.z = object.scale.x + randomFloat(-0.15, 0.15);
 
