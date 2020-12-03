@@ -20,9 +20,6 @@ document.body.appendChild(renderer.domElement);
 const player = new Player(camera);
 world.init(player);
 
-const chunk = new Chunk();
-chunk.init(world, player);
-
 camera.position.y = player.position.y + 2.5;
 camera.position.z = player.position.z + 3.5;
 camera.rotation.x = -Math.PI / 8;

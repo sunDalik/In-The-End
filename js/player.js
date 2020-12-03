@@ -1,6 +1,7 @@
 import * as THREE from "three";
 import {Vector3} from "three";
 import {renderer, world} from "./setup";
+import {chunkSize} from "./chunk";
 
 export class Player extends THREE.Mesh {
     constructor(camera) {
@@ -20,9 +21,9 @@ export class Player extends THREE.Mesh {
         this.movingCameraLeft = false;
         this.movingCameraRight = false;
         this.direction = new Vector3();
+        this.lastChunk = new Vector3(0, 0, 0);
         window.addEventListener("keydown", e => this.onKeyDown(e));
         window.addEventListener("keyup", e => this.onKeyUp(e));
-        this.update();
     }
 
     update() {
@@ -31,15 +32,16 @@ export class Player extends THREE.Mesh {
         this.direction.normalize();
         this.rotateY((this.movingCameraLeft - this.movingCameraRight) * this.cameraRotationSpeed);
 
+        const dir = new Vector3();
         if (this.direction.z !== 0) {
-            const dir = this.getWorldDirection();
+            this.getWorldDirection(dir);
             const xmove = this.direction.z * dir.x * this.speed;
             const zmove = this.direction.z * dir.z * this.speed;
             this.position.x += xmove;
             this.position.z += zmove;
         }
         if (this.direction.x !== 0) {
-            const dir = this.getWorldDirection();
+            this.getWorldDirection(dir);
             const axis = new THREE.Vector3(0, 1, 0);
             const angle = Math.PI / 2;
             dir.applyAxisAngle(axis, angle);
@@ -49,7 +51,7 @@ export class Player extends THREE.Mesh {
             this.position.x += xmove;
             this.position.z += zmove;
         }
-
+        this.updateChunks();
         renderer.render(world, this.camera); // do we need it?
         window.requestAnimationFrame(() => this.update());
     }
@@ -98,5 +100,24 @@ export class Player extends THREE.Mesh {
                 this.movingCameraRight = false;
                 break;
         }
+    }
+
+    updateChunks() {
+        const currentChunk = this.getChunkTile();
+        if (currentChunk.x !== this.lastChunk.x || currentChunk.z !== this.lastChunk.z) {
+            world.loadChunks(currentChunk);
+        }
+    }
+
+    getChunkTile() {
+        const chunkTile = new Vector3(0, 0, 0);
+        if (this.position.x === 0) chunkTile.x = 1;
+        else if (this.position.x > 0) chunkTile.x = Math.ceil(this.position.x / chunkSize);
+        else chunkTile.x = Math.floor(this.position.x / chunkSize);
+
+        if (this.position.z === 0) chunkTile.z = 1;
+        else if (this.position.z > 0) chunkTile.z = Math.ceil(this.position.z / chunkSize);
+        else chunkTile.z = Math.floor(this.position.z / chunkSize);
+        return chunkTile;
     }
 }
