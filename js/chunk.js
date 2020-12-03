@@ -1,7 +1,8 @@
 import * as THREE from "three";
 import {Vector3} from "three";
 import {objLoader} from "./obj_loader";
-import {randomFloat} from "./random_utils";
+import {randomFloat, randomInt} from "./random_utils";
+import {callTimes, getSize} from "./utils";
 
 export const chunkSize = 20;
 
@@ -26,23 +27,35 @@ export class Chunk extends THREE.Mesh {
 
     init(scene, player) {
         scene.add(this);
-        const playerBox = new THREE.Box3().setFromObject(player);
-        const playerSize = new Vector3();
-        playerBox.getSize(playerSize);
-        this.position.y = player.position.y - playerSize.y / 2;
+        this.position.y = player.position.y - getSize(player).y / 2;
         this.putDecorations();
     }
 
     putDecorations() {
+        callTimes(() => this.placeTwig(), randomInt(1, 4));
+    }
+
+    placeTwig() {
         objLoader.load('models/twig.obj', object => {
             this.add(object);
             object.children[0].material = new THREE.MeshPhongMaterial({color: 0x57503f});
             object.castShadow = true;
             object.receiveShadow = true;
             object.rotateX(Math.PI / 2);
-            object.position.x = randomFloat(-(chunkSize - 2) / 2, (chunkSize - 2) / 2);
-            object.position.y = randomFloat(-(chunkSize - 2) / 2, (chunkSize - 2) / 2);
-            object.rotation.y = randomFloat(0, Math.PI * 2);
+            this.randomizeObject(object);
         });
+    }
+
+    randomizeObject(object) {
+        // rotated
+        object.position.x = randomFloat(-(chunkSize - 2) / 2, (chunkSize - 2) / 2);
+        object.position.y = randomFloat(-(chunkSize - 2) / 2, (chunkSize - 2) / 2);
+        object.rotation.y = randomFloat(0, Math.PI * 2);
+
+        object.scale.x = randomFloat(0.6, 1.4);
+        object.scale.y = object.scale.x + randomFloat(-0.15, 0.15);
+        object.scale.z = object.scale.x + randomFloat(-0.15, 0.15);
+
+        object.position.z = 0;
     }
 }
