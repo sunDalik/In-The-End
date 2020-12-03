@@ -1,8 +1,9 @@
 import * as THREE from "three";
 import {Vector3} from "three";
-import {world} from "./setup";
+import {destroyObject, world} from "./setup";
 import {randomFloat, randomInt} from "./random_utils";
-import {Chunk, chunkSize} from "./chunk";
+import {Chunk} from "./chunk";
+import {removeObjectFromArray} from "./utils";
 
 export class World extends THREE.Scene {
     constructor() {
@@ -71,7 +72,7 @@ export class World extends THREE.Scene {
                 this.createChunk(chunkCheck.x, chunkCheck.z);
             }
         }
-        this.cleanUpChunks();
+        this.cleanUpChunks(from);
     }
 
     initChunkCheckList(distance, origin) {
@@ -93,7 +94,20 @@ export class World extends THREE.Scene {
         this.chunks.push(chunk);
     }
 
-    cleanUpChunks() {
+    cleanUpChunks(from) {
+        for (let i = this.chunks.length - 1; i >= 0; i--) {
+            const chunk = this.chunks[i];
+            //???? not sure...
+            let xdist = Math.abs(chunk.chunkTile.x - from.x);
+            if (Math.sign(chunk.chunkTile.x) !== Math.sign(from).x) xdist -= 1;
 
+            let zdist = Math.abs(chunk.chunkTile.z - from.z);
+            if (Math.sign(chunk.chunkTile.z) !== Math.sign(from).z) zdist -= 1;
+
+            if (xdist >= this.destructionDistance || zdist >= this.destructionDistance) {
+                removeObjectFromArray(chunk, this.chunks);
+                destroyObject(chunk);
+            }
+        }
     }
 }
