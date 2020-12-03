@@ -4,7 +4,7 @@ import {renderer, world} from "./setup";
 
 export class Player extends THREE.Mesh {
     constructor(camera) {
-        const geometry = new THREE.ConeGeometry();
+        const geometry = new THREE.BoxGeometry();
         const material = new THREE.MeshPhongMaterial({color: 0xffffff});
         super(geometry, material);
         this.camera = camera;
