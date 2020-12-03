@@ -16,7 +16,7 @@ export class Player extends THREE.Mesh {
         this.castShadow = true;
         this.receiveShadow = true;
 
-        this.speed = 0.1;
+        this.speed = 0.09;
         this.movingForward = false;
         this.movingBackwards = false;
         this.movingLeft = false;
@@ -60,18 +60,29 @@ export class Player extends THREE.Mesh {
 
 
         const cameraFovStep = 0.7;
-        const cameraWalkFov = 71;
+        const cameraWalkFov = 79;
+        const cameraBackFov = 71;
         const cameraNormalFov = 75;
-        if (this.direction.x !== 0 || this.direction.z !== 0) {
-            if (this.camera.fov > cameraWalkFov) {
+        if (this.movingBackwards) {
+            if (this.camera.fov > cameraBackFov) {
                 this.camera.fov -= cameraFovStep;
-                if (this.camera.fov < cameraWalkFov) this.camera.fov = cameraWalkFov;
+                if (this.camera.fov < cameraBackFov) this.camera.fov = cameraBackFov;
+                this.camera.updateProjectionMatrix();
+            }
+        } else if (this.movingForward) {
+            if (this.camera.fov < cameraWalkFov) {
+                this.camera.fov += cameraFovStep;
+                if (this.camera.fov > cameraWalkFov) this.camera.fov = cameraWalkFov;
                 this.camera.updateProjectionMatrix();
             }
         } else {
             if (this.camera.fov < cameraNormalFov) {
                 this.camera.fov += cameraFovStep;
                 if (this.camera.fov > cameraNormalFov) this.camera.fov = cameraNormalFov;
+                this.camera.updateProjectionMatrix();
+            } else if (this.camera.fov > cameraNormalFov) {
+                this.camera.fov -= cameraFovStep;
+                if (this.camera.fov < cameraNormalFov) this.camera.fov = cameraNormalFov;
                 this.camera.updateProjectionMatrix();
             }
         }
