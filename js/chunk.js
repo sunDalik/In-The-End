@@ -43,8 +43,8 @@ export class Chunk extends THREE.Mesh {
         objLoader.load('models/twig.obj', object => {
             this.add(object);
             object.children[0].material = new THREE.MeshPhongMaterial({color: 0x57503f});
-            object.castShadow = true;
-            object.receiveShadow = true;
+            object.children[0].castShadow = true;
+            object.children[0].receiveShadow = true;
             this.randomizeObject(object);
             this.randomizeScale(object, 0.6, 1.4);
         });
@@ -54,8 +54,8 @@ export class Chunk extends THREE.Mesh {
         objLoader.load('models/twig_2.obj', object => {
             this.add(object);
             object.children[0].material = new THREE.MeshPhongMaterial({color: 0x57503f});
-            object.castShadow = true;
-            object.receiveShadow = true;
+            object.children[0].castShadow = true;
+            object.children[0].receiveShadow = true;
             this.randomizeObject(object);
             this.randomizeScale(object, 0.6, 1.4);
         });
@@ -66,8 +66,8 @@ export class Chunk extends THREE.Mesh {
         objLoader.load(url, object => {
             this.add(object);
             object.children[0].material = new THREE.MeshPhongMaterial({color: 0x3f404a});
-            object.castShadow = true;
-            object.receiveShadow = true;
+            object.children[0].castShadow = true;
+            object.children[0].receiveShadow = true;
             this.randomizeObject(object);
             this.randomizeScale(object, 1.1, 1.3);
         });
@@ -77,8 +77,8 @@ export class Chunk extends THREE.Mesh {
         objLoader.load("models/rock_small.obj", object => {
             this.add(object);
             object.children[0].material = new THREE.MeshPhongMaterial({color: 0x605f63});
-            object.castShadow = true;
-            object.receiveShadow = true;
+            object.children[0].castShadow = true;
+            object.children[0].receiveShadow = true;
             this.randomizeObject(object);
             this.randomizeScale(object, 0.5, 1.2);
         });
@@ -89,10 +89,10 @@ export class Chunk extends THREE.Mesh {
         objLoader.load(url, object => {
             this.add(object);
             object.children[0].material = new THREE.MeshPhongMaterial({color: 0xe6e4d5});
-            object.castShadow = true;
-            object.receiveShadow = true;
+            object.children[0].castShadow = true;
+            object.children[0].receiveShadow = true;
             this.randomizeObject(object);
-            this.randomizeScale(object, 0.2, 1.2);
+            this.randomizeScale(object, 0.35, 1.2);
         });
     }
 

@@ -27,13 +27,14 @@ export class World extends THREE.Scene {
     }
 
     initLighting() {
-        this.playerLight = new THREE.SpotLight(0xFFFFFF, 1.1, 6);
+        this.playerLight = new THREE.SpotLight(0xFFFFFF, 1.4, 11);
         this.playerLight.position.x = this.player.position.x;
         this.playerLight.position.z = this.player.position.z;
-        this.playerLight.position.y = this.player.position.y + 10;
+        this.playerLight.position.y = this.player.position.y + 14;
         this.playerLight.castShadow = true;
         world.add(this.playerLight.target);
-        this.playerLight.angle = Math.PI / 4;
+        this.playerLight.angle = Math.PI / 5.5;
+        this.playerLight.penumbra = 0.1;
         this.add(this.playerLight);
         this.playerLight.offset = new Vector3(0, 0, 0);
 
@@ -58,7 +59,8 @@ export class World extends THREE.Scene {
 
         const playerWorldDir = new Vector3();
         this.player.getWorldDirection(playerWorldDir);
-        this.playerLight.position.lerp(new Vector3(this.player.position.x - playerWorldDir.x * 1.2 + this.playerLight.offset.x, this.player.position.y + 3 + this.playerLight.offset.y, this.player.position.z - playerWorldDir.z * 1.2 + this.playerLight.offset.z), 0.05);
+        const forwardTiltMul = 2.2;
+        this.playerLight.position.lerp(new Vector3(this.player.position.x - playerWorldDir.x * forwardTiltMul + this.playerLight.offset.x, this.player.position.y + 7 + this.playerLight.offset.y, this.player.position.z - playerWorldDir.z * forwardTiltMul + this.playerLight.offset.z), 0.05);
         this.playerLight.target.position.x = this.playerLight.position.x;
         this.playerLight.target.position.z = this.playerLight.position.z;
         requestAnimationFrame(() => this.update());
