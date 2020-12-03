@@ -105,6 +105,7 @@ export class Player extends THREE.Mesh {
     updateChunks() {
         const currentChunk = this.getChunkTile();
         if (currentChunk.x !== this.lastChunk.x || currentChunk.z !== this.lastChunk.z) {
+            this.lastChunk = currentChunk;
             world.loadChunks(currentChunk);
         }
     }

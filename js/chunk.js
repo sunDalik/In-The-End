@@ -8,7 +8,7 @@ export const chunkSize = 20;
 export class Chunk extends THREE.Mesh {
     constructor(x, z) {
         const geometry = new THREE.PlaneBufferGeometry(chunkSize, chunkSize);
-        const material = new THREE.MeshPhongMaterial({color: 0x96784b, side: THREE.FrontSide});
+        const material = new THREE.MeshPhongMaterial({color: 0xa37c5f, side: THREE.FrontSide});
         super(geometry, material);
         this.receiveShadow = true;
         this.rotateX(-Math.PI / 2);

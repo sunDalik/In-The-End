@@ -2,7 +2,7 @@ import * as THREE from "three";
 import {Vector3} from "three";
 import {world} from "./setup";
 import {randomFloat, randomInt} from "./random_utils";
-import {Chunk} from "./chunk";
+import {Chunk, chunkSize} from "./chunk";
 
 export class World extends THREE.Scene {
     constructor() {
@@ -11,8 +11,8 @@ export class World extends THREE.Scene {
         this.currentPlayerLightFrame = 0;
         this.framesUntilPlayerLightUpdate = 0;
         this.chunks = [];
-        this.renderDistance = 1;
-        this.destructionDistance = 3;
+        this.renderDistance = 3;
+        this.destructionDistance = this.renderDistance * 2;
     }
 
     init(player) {
@@ -30,14 +30,17 @@ export class World extends THREE.Scene {
         world.add(ambientLight);
 
         this.playerLight = new THREE.SpotLight(0xFFFFFF, 1, 6);
+        this.playerLight.position.x = this.player.position.x;
+        this.playerLight.position.z = this.player.position.z;
+        this.playerLight.position.y = this.player.position.y + 10;
         this.playerLight.castShadow = true;
         world.add(this.playerLight.target);
         this.playerLight.angle = Math.PI / 4;
         this.add(this.playerLight);
         this.playerLight.offset = new Vector3(0, 0, 0);
 
-        const color = new THREE.Color(0x8e834d);
-        this.fog = new THREE.Fog(color, 10, 20);
+        const color = new THREE.Color(0xab9d59);
+        this.fog = new THREE.Fog(color, 4, 35);
         this.background = color;
     }
 
@@ -49,11 +52,12 @@ export class World extends THREE.Scene {
             const offsetEdge = 0.2;
             this.playerLight.offset.x = randomFloat(-offsetEdge, offsetEdge);
             this.playerLight.offset.z = randomFloat(-offsetEdge, offsetEdge);
+            this.playerLight.offset.y = randomFloat(-offsetEdge, offsetEdge);
         }
 
         const playerWorldDir = new Vector3();
         this.player.getWorldDirection(playerWorldDir);
-        this.playerLight.position.lerp(new Vector3(this.player.position.x - playerWorldDir.x * 1.2 + this.playerLight.offset.x, this.player.position.y + 3, this.player.position.z - playerWorldDir.z * 1.2 + this.playerLight.offset.z), 0.04);
+        this.playerLight.position.lerp(new Vector3(this.player.position.x - playerWorldDir.x * 1.2 + this.playerLight.offset.x, this.player.position.y + 3 + this.playerLight.offset.y, this.player.position.z - playerWorldDir.z * 1.2 + this.playerLight.offset.z), 0.05);
         this.playerLight.target.position.x = this.playerLight.position.x;
         this.playerLight.target.position.z = this.playerLight.position.z;
         requestAnimationFrame(() => this.update());
@@ -75,7 +79,8 @@ export class World extends THREE.Scene {
         for (let x = -distance; x <= distance; x++) {
             for (let z = -distance; z <= distance; z++) {
                 const tile = {x: x + origin.x, z: z + origin.z};
-                if (tile.x === 0 || tile.z === 0) continue;
+                if (tile.x === 0) tile.x += Math.sign(x);
+                if (tile.z === 0) tile.z += Math.sign(z);
                 chunkCheckList.push(new Vector3(tile.x, 0, tile.z));
             }
         }

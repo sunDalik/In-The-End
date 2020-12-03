@@ -1,6 +1,6 @@
 import * as THREE from "three";
 import {Player} from "./player";
-import {Chunk} from "./chunk";
+import {Chunk, chunkSize} from "./chunk";
 import {World} from "./world";
 
 
@@ -18,10 +18,12 @@ document.body.appendChild(renderer.domElement);
 
 
 const player = new Player(camera);
+player.position.x = chunkSize / 2;
+player.position.z = chunkSize / 2;
 world.init(player);
 
-camera.position.y = player.position.y + 2.5;
-camera.position.z = player.position.z + 3.5;
+camera.position.y = 2.5;
+camera.position.z = 3.5;
 camera.rotation.x = -Math.PI / 8;
 
 window.addEventListener('resize', () => {
