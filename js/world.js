@@ -14,6 +14,9 @@ export class World extends THREE.Scene {
         this.chunks = [];
         this.renderDistance = 3;
         this.destructionDistance = this.renderDistance * 2;
+
+        this.layer = 0;
+        this.lastLayerPlayerPos = new Vector3();
     }
 
     init(player) {
@@ -21,6 +24,7 @@ export class World extends THREE.Scene {
         this.player = player;
         world.add(player);
         this.player.update();
+        this.lastLayerPlayerPos.copy(this.player.position);
 
         this.initLighting();
         this.update();
@@ -41,7 +45,7 @@ export class World extends THREE.Scene {
         this.playerLight.offset = new Vector3(0, 0, 0);
 
         const color = new THREE.Color(0xab9d59);
-        this.fog = new THREE.Fog(color, 4, 35);
+        this.fog = new THREE.Fog(color, 4, 30);
         this.background = color;
 
         this.ambientLight = new THREE.AmbientLight(color, 0.09);
@@ -53,7 +57,7 @@ export class World extends THREE.Scene {
         if (this.currentPlayerLightFrame >= this.framesUntilPlayerLightUpdate) {
             this.currentPlayerLightFrame = 0;
             this.framesUntilPlayerLightUpdate = randomInt(4, 8);
-            const offsetEdge = 0.2;
+            const offsetEdge = 0.3;
             this.playerLight.offset.x = randomFloat(-offsetEdge, offsetEdge);
             this.playerLight.offset.z = randomFloat(-offsetEdge, offsetEdge);
             this.playerLight.offset.y = randomFloat(-offsetEdge, offsetEdge);
@@ -65,6 +69,19 @@ export class World extends THREE.Scene {
         this.playerLight.position.lerp(new Vector3(this.player.position.x - playerWorldDir.x * forwardTiltMul + this.playerLight.offset.x, this.player.position.y + 7 + this.playerLight.offset.y, this.player.position.z - playerWorldDir.z * forwardTiltMul + this.playerLight.offset.z), 0.05);
         this.playerLight.target.position.x = this.playerLight.position.x;
         this.playerLight.target.position.z = this.playerLight.position.z;
+
+        if (this.lastLayerPlayerPos && this.player.position.distanceTo(this.lastLayerPlayerPos) > 10) {
+            this.lastLayerPlayerPos = null;
+            this.layer++;
+        } else if (this.lastLayerPlayerPos === null) {
+            const playerChunk = this.player.getChunkTile();
+            const chunk = this.chunks.find(c => c.chunkTile.x === playerChunk.x && c.chunkTile.z === playerChunk.z);
+            if (chunk && chunk.layer === this.layer) {
+                this.lastLayerPlayerPos = new Vector3();
+                this.lastLayerPlayerPos.copy(this.player.position);
+            }
+        }
+
         requestAnimationFrame(() => this.update());
     }
 
@@ -93,7 +110,7 @@ export class World extends THREE.Scene {
     }
 
     createChunk(x, z) {
-        const chunk = new Chunk(x, z);
+        const chunk = new Chunk(x, z, this.layer);
         chunk.init(this, this.player);
         this.chunks.push(chunk);
     }

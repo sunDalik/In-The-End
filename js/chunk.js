@@ -7,11 +7,12 @@ import {callTimes, getSize} from "./utils";
 export const chunkSize = 20;
 
 export class Chunk extends THREE.Mesh {
-    constructor(x, z) {
+    constructor(x, z, layer) {
         const geometry = new THREE.PlaneBufferGeometry(chunkSize + 0.1, chunkSize + 0.1);
         const material = new THREE.MeshPhongMaterial({color: 0xa37c5f, side: THREE.FrontSide});
         super(geometry, material);
         this.receiveShadow = true;
+        this.layer = layer;
         this.rotateX(-Math.PI / 2);
         this.chunkTile = new Vector3(x, 0, z);
         this.placeChunk();
@@ -32,11 +33,18 @@ export class Chunk extends THREE.Mesh {
     }
 
     putDecorations() {
-        callTimes(() => this.placeTwig(), randomInt(2, 6));
-        callTimes(() => this.placeTwig2(), randomInt(0, 2));
-        callTimes(() => this.placeGrave(), randomInt(2, 4));
-        callTimes(() => this.placeRocks(), randomInt(2, 4));
-        callTimes(() => this.placeBones(), randomInt(2, 4));
+        if (this.layer === 0) {
+            callTimes(() => this.placeTwig(), randomInt(2, 7));
+            callTimes(() => this.placeTwig2(), randomInt(0, 3));
+            callTimes(() => this.placeRocks(), randomInt(0, 1));
+        } else if (this.layer === 1) {
+            callTimes(() => this.placeGrave(), randomInt(2, 4));
+            callTimes(() => this.placeBones(), randomInt(2, 4));
+        } else if (this.layer === 2) {
+            callTimes(() => this.placeRocks(), randomInt(2, 4));
+        } else {
+
+        }
     }
 
     placeTwig() {
