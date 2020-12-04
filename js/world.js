@@ -18,9 +18,10 @@ export class World extends THREE.Scene {
         this.layer = 0;
         this.lastLayerPlayerPos = new Vector3();
 
-        this.currentFlickTime = 0;
+        this.currentDeathTime = 0;
         this.flickTime = 300;
-        this.startFlickering = false;
+        this.startDying = false;
+        this.blackTime = 240;
     }
 
     init(player) {
@@ -95,32 +96,20 @@ export class World extends THREE.Scene {
             this.startFlickering = true;
         }
         if (this.startFlickering) {
-            if (this.currentFlickTime >= this.flickTime) {
-                this.fog.color = new THREE.Color(0x000000);
-                this.background = new THREE.Color(0x000000);
+            if (this.currentDeathTime >= this.blackTime + this.flickTime) {
                 this.ambientLight.intensity = 0;
                 this.playerLight.intensity = 0;
-                this.player.material = new THREE.MeshBasicMaterial({color: 0x1f1f1f});
+                this.player.material = new THREE.MeshBasicMaterial({color: 0x090909});
                 this.player.dead = true;
                 this.startFlickering = false;
-            } else if (this.currentFlickTime >= this.flickTime * 3 / 4) {
-                this.playerLight.intensity = randomFloat(0.1, 0.8);
-                this.ambientLight.intensity = 0.01;
-                this.background = this.fog.color = new THREE.Color(0x454024);
-            } else if (this.currentFlickTime >= this.flickTime * 2 / 4) {
-                this.playerLight.intensity = randomFloat(0.3, 1);
+            } else if (this.currentDeathTime >= this.blackTime) {
+                this.playerLight.intensity = randomFloat(0.8, 1.4);
                 this.ambientLight.intensity = 0.03;
-                this.background = this.fog.color = new THREE.Color(0x5e5731);
-            } else if (this.currentFlickTime >= this.flickTime / 4) {
-                this.playerLight.intensity = randomFloat(0.5, 1.2);
-                this.ambientLight.intensity = 0.05;
-                this.background = this.fog.color = new THREE.Color(0x786e3e);
             } else {
-                this.playerLight.intensity = randomFloat(0.7, 1.4);
-                this.ambientLight.intensity = 0.07;
-                this.background = this.fog.color = new THREE.Color(0x91864c);
+                this.fog.color = this.background = new THREE.Color(0x000000);
+                this.ambientLight.intensity = 0.05;
             }
-            this.currentFlickTime++;
+            this.currentDeathTime++;
         }
         requestAnimationFrame(() => this.update());
     }
