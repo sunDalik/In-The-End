@@ -1,9 +1,8 @@
 import * as THREE from "three";
 import {Player} from "./player";
-import {Chunk, chunkSize} from "./chunk";
+import {chunkSize} from "./chunk";
 import {World} from "./world";
 import {loadAll} from "./obj_loader";
-
 
 export const world = new World();
 const camera = new THREE.PerspectiveCamera(75, window.innerWidth / window.innerHeight, 0.1, 100);

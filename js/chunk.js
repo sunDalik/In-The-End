@@ -33,6 +33,7 @@ export class Chunk extends THREE.Mesh {
     }
 
     putDecorations() {
+        if (this.layer === -1) return;
         if (this.layer === 0) {
             callTimes(() => this.placeTwig(), randomInt(2, 7));
             callTimes(() => this.placeTwig2(), randomInt(0, 3));
@@ -43,7 +44,8 @@ export class Chunk extends THREE.Mesh {
         } else if (this.layer === 2) {
             callTimes(() => this.placeRocks(), randomInt(2, 4));
         } else {
-
+            callTimes(() => this.placeCubes(), randomInt(2, 4));
+            callTimes(() => this.placeFloatingCubes(), randomInt(3, 5));
         }
     }
 
@@ -107,6 +109,36 @@ export class Chunk extends THREE.Mesh {
         this.randomizeObject(object);
         this.randomizeScale(object, 0.8, 1.2);
         object.position.z = randomFloat(0.4, 0.9);
+    }
+
+    placeCubes() {
+        const geometry = new THREE.BoxGeometry();
+        const color = 0x60616b;
+        const material = new THREE.MeshPhongMaterial({color: color});
+        const object = new THREE.Mesh(geometry, material);
+        this.add(object);
+        object.castShadow = true;
+        object.receiveShadow = true;
+        this.randomizeObject(object);
+        this.randomizeScale(object, 1.4, 3);
+        object.rotation.x = randomFloat(0, 360);
+        object.rotation.z = randomFloat(0, 360);
+        object.position.z = randomFloat(0.7, 1);
+    }
+
+    placeFloatingCubes() {
+        const geometry = new THREE.BoxGeometry();
+        const color = 0x60616b;
+        const material = new THREE.MeshPhongMaterial({color: color});
+        const object = new THREE.Mesh(geometry, material);
+        this.add(object);
+        object.castShadow = true;
+        object.receiveShadow = true;
+        this.randomizeObject(object);
+        this.randomizeScale(object, 0.8, 1.8);
+        object.rotation.x = randomFloat(0, 360);
+        object.rotation.z = randomFloat(0, 360);
+        object.position.z = randomFloat(6, 11);
     }
 
     randomizeObject(object) {

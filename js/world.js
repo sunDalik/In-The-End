@@ -15,14 +15,18 @@ export class World extends THREE.Scene {
         this.renderDistance = 3;
         this.destructionDistance = this.renderDistance * 2;
 
-        this.layer = 0;
+        this.layer = 3;
         this.lastLayerPlayerPos = new Vector3();
+
+        this.currentFlickTime = 0;
+        this.flickTime = 180;
+        this.startFlickering = false;
     }
 
     init(player) {
-        this.distance = 0;
         this.player = player;
         world.add(player);
+        this.createChunk(player.getChunkTile().x, player.getChunkTile().z, -1);
         this.player.update();
         this.lastLayerPlayerPos.copy(this.player.position);
 
@@ -82,6 +86,25 @@ export class World extends THREE.Scene {
             }
         }
 
+        if (this.layer >= 4 && this.lastLayerPlayerPos !== null) {
+            this.startFlickering = true;
+        }
+        if (this.startFlickering) {
+            if (this.currentFlickTime >= this.flickTime) {
+                this.fog.color = new THREE.Color(0x000000);
+                this.background = new THREE.Color(0x000000);
+                this.ambientLight.intensity = 0;
+                this.playerLight.intensity = 0;
+                this.player.material = new THREE.MeshBasicMaterial({color: 0x1f1f1f});
+                this.player.dead = true;
+                this.startFlickering = false;
+            } else if (this.currentFlickTime >= this.flickTime / 2) {
+                this.playerLight.intensity = randomFloat(0.5, 1.1);
+            } else {
+                this.playerLight.intensity = randomFloat(0.8, 1.4);
+            }
+            this.currentFlickTime++;
+        }
         requestAnimationFrame(() => this.update());
     }
 
@@ -90,7 +113,7 @@ export class World extends THREE.Scene {
         for (const chunkCheck of chunkCheckList) {
             const createdChunk = this.chunks.find(chunk => chunk.chunkTile.x === chunkCheck.x && chunk.chunkTile.z === chunkCheck.z);
             if (!createdChunk) {
-                this.createChunk(chunkCheck.x, chunkCheck.z);
+                this.createChunk(chunkCheck.x, chunkCheck.z, this.layer);
             }
         }
         this.cleanUpChunks(from);
@@ -109,8 +132,8 @@ export class World extends THREE.Scene {
         return chunkCheckList;
     }
 
-    createChunk(x, z) {
-        const chunk = new Chunk(x, z, this.layer);
+    createChunk(x, z, layer) {
+        const chunk = new Chunk(x, z, layer);
         chunk.init(this, this.player);
         this.chunks.push(chunk);
     }

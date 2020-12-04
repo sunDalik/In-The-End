@@ -26,6 +26,7 @@ export class Player extends THREE.Mesh {
         this.movingCameraLeft = false;
         this.movingCameraRight = false;
 
+        this.dead = false;
         this.direction = new Vector3();
         this.lastChunk = new Vector3(0, 0, 0);
         window.addEventListener("keydown", e => this.onKeyDown(e));
@@ -33,6 +34,9 @@ export class Player extends THREE.Mesh {
     }
 
     update() {
+        renderer.render(world, this.camera);
+        window.requestAnimationFrame(() => this.update());
+        if (this.dead) return;
         this.direction.z = this.movingBackwards - this.movingForward;
         this.direction.x = this.movingRight - this.movingLeft;
         this.direction.normalize();
@@ -88,8 +92,6 @@ export class Player extends THREE.Mesh {
         }
 
         this.updateChunks();
-        renderer.render(world, this.camera);
-        window.requestAnimationFrame(() => this.update());
     }
 
     onKeyDown(e) {
@@ -141,7 +143,7 @@ export class Player extends THREE.Mesh {
     updateChunks() {
         const currentChunk = this.getChunkTile();
         if (currentChunk.x !== this.lastChunk.x || currentChunk.z !== this.lastChunk.z) {
-            this.lastChunk = currentChunk;
+            this.lastChunk.copy(currentChunk);
             world.loadChunks(currentChunk);
         }
     }
