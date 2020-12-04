@@ -38,3 +38,12 @@ export function destroyObject(object) {
     if (object.geometry) object.geometry.dispose();
     if (object.material) object.material.dispose();
 }
+
+export function writeText(textBoxId, text, stayTime) {
+    const textBox = document.getElementById(textBoxId);
+    textBox.innerText = text;
+    textBox.style.opacity = "100%";
+    setTimeout(() => {
+        if (textBox.innerText === text) textBox.style.opacity = "0";
+    }, stayTime);
+}

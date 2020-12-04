@@ -1,6 +1,6 @@
 import * as THREE from "three";
 import {Vector3} from "three";
-import {destroyObject, world} from "./setup";
+import {destroyObject, world, writeText} from "./setup";
 import {randomFloat, randomInt} from "./random_utils";
 import {Chunk} from "./chunk";
 import {removeObjectFromArray} from "./utils";
@@ -15,7 +15,7 @@ export class World extends THREE.Scene {
         this.renderDistance = 3;
         this.destructionDistance = this.renderDistance * 2;
 
-        this.layer = 3;
+        this.layer = 0;
         this.lastLayerPlayerPos = new Vector3();
 
         this.currentFlickTime = 0;
@@ -32,6 +32,11 @@ export class World extends THREE.Scene {
 
         this.initLighting();
         this.update();
+
+        writeText("tb", "[WASD] - Move\n[QE] - Rotate", 7000);
+        setTimeout(() => {
+            writeText("tb_title", "In The End", 6000);
+        }, 14000);
     }
 
     initLighting() {
