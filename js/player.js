@@ -88,7 +88,7 @@ export class Player extends THREE.Mesh {
         }
 
         this.updateChunks();
-        renderer.render(world, this.camera); // do we need it?
+        renderer.render(world, this.camera);
         window.requestAnimationFrame(() => this.update());
     }
 

@@ -1,6 +1,6 @@
 import * as THREE from "three";
 import {Vector3} from "three";
-import {MODELS, objLoader} from "./obj_loader";
+import {MODELS} from "./obj_loader";
 import {randomFloat, randomInt} from "./random_utils";
 import {callTimes, getSize} from "./utils";
 
@@ -42,9 +42,9 @@ export class Chunk extends THREE.Mesh {
     placeTwig() {
         const object = MODELS.twig.clone();
         this.add(object);
-        object.children[0].material = new THREE.MeshLambertMaterial({color: 0x948666});
-        object.children[0].castShadow = true;
-        object.children[0].receiveShadow = true;
+        object.material = new THREE.MeshLambertMaterial({color: 0x948666});
+        object.castShadow = true;
+        object.receiveShadow = true;
         this.randomizeObject(object);
         this.randomizeScale(object, 0.6, 1.4);
     }
@@ -52,9 +52,9 @@ export class Chunk extends THREE.Mesh {
     placeTwig2() {
         const object = MODELS.twig_2.clone();
         this.add(object);
-        object.children[0].material = new THREE.MeshLambertMaterial({color: 0x948666});
-        object.children[0].castShadow = true;
-        object.children[0].receiveShadow = true;
+        object.material = new THREE.MeshLambertMaterial({color: 0x948666});
+        object.castShadow = true;
+        object.receiveShadow = true;
         this.randomizeObject(object);
         this.randomizeScale(object, 0.6, 1.4);
     }
@@ -62,9 +62,9 @@ export class Chunk extends THREE.Mesh {
     placeGrave() {
         const object = Math.random() < 0.5 ? MODELS.grave_cross.clone() : MODELS.grave_broken.clone();
         this.add(object);
-        object.children[0].material = new THREE.MeshPhongMaterial({color: 0x3f404a});
-        object.children[0].castShadow = true;
-        object.children[0].receiveShadow = true;
+        object.material = new THREE.MeshPhongMaterial({color: 0x3f404a});
+        object.castShadow = true;
+        object.receiveShadow = true;
         this.randomizeObject(object);
         this.randomizeScale(object, 1.1, 1.3);
     }
@@ -72,9 +72,9 @@ export class Chunk extends THREE.Mesh {
     placeRocks() {
         const object = MODELS.rock_small.clone();
         this.add(object);
-        object.children[0].material = new THREE.MeshPhongMaterial({color: 0x605f63});
-        object.children[0].castShadow = true;
-        object.children[0].receiveShadow = true;
+        object.material = new THREE.MeshPhongMaterial({color: 0x605f63});
+        object.castShadow = true;
+        object.receiveShadow = true;
         this.randomizeObject(object);
         this.randomizeScale(object, 0.5, 1.2);
     }
@@ -82,11 +82,23 @@ export class Chunk extends THREE.Mesh {
     placeBones() {
         const object = Math.random() < 0.5 ? MODELS.bone_skull.clone() : MODELS.bone_spine.clone();
         this.add(object);
-        object.children[0].material = new THREE.MeshPhongMaterial({color: 0xe6e4d5});
-        object.children[0].castShadow = true;
-        object.children[0].receiveShadow = true;
+        object.material = new THREE.MeshPhongMaterial({color: 0xe6e4d5});
+        object.castShadow = true;
+        object.receiveShadow = true;
         this.randomizeObject(object);
         this.randomizeScale(object, 0.35, 1.2);
+    }
+
+    placeOrb() {
+        const geometry = new THREE.SphereGeometry();
+        const color = 0xdb1f57;
+        const material = new THREE.MeshPhongMaterial({color: color, flatShading: true});
+        const object = new THREE.Mesh(geometry, material);
+        this.add(object);
+        object.castShadow = true;
+        this.randomizeObject(object);
+        this.randomizeScale(object, 0.8, 1.2);
+        object.position.z = randomFloat(0.4, 0.9);
     }
 
     randomizeObject(object) {

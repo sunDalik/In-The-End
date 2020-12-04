@@ -27,7 +27,7 @@ function loadByUrl(url, onLoad) {
 
 export function checkLoadCompletion(object, url, onLoad) {
     url = url.slice(7, -4);
-    MODELS[url] = object;
+    MODELS[url] = object.children[0];
     for (const model in MODELS) {
         if (MODELS[model] === null) return;
     }
