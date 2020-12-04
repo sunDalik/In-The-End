@@ -42,7 +42,9 @@ export class Chunk extends THREE.Mesh {
             callTimes(() => this.placeGrave(), randomInt(2, 4));
             callTimes(() => this.placeBones(), randomInt(2, 4));
         } else if (this.layer === 2) {
-            callTimes(() => this.placeRocks(), randomInt(2, 4));
+            callTimes(() => this.placeRocks(), randomInt(3, 5));
+            callTimes(() => this.placeArch(), randomInt(2, 4));
+            callTimes(() => this.placeCubes(true), randomInt(0, 2));
         } else {
             callTimes(() => this.placeCubes(), randomInt(2, 4));
             callTimes(() => this.placeFloatingCubes(), randomInt(3, 5));
@@ -99,6 +101,16 @@ export class Chunk extends THREE.Mesh {
         this.randomizeScale(object, 0.35, 1.2);
     }
 
+    placeArch() {
+        const object = Math.random() < 0.5 ? MODELS.ruins_archway_0.clone() : MODELS.ruins_archway_1.clone();
+        this.add(object);
+        object.material = new THREE.MeshPhongMaterial({color: 0x8c8673});
+        object.castShadow = true;
+        object.receiveShadow = true;
+        this.randomizeObject(object);
+        this.randomizeScale(object, 1, 1.6);
+    }
+
     placeOrb() {
         const geometry = new THREE.SphereGeometry();
         const color = 0xdb1f57;
@@ -111,19 +123,21 @@ export class Chunk extends THREE.Mesh {
         object.position.z = randomFloat(0.4, 0.9);
     }
 
-    placeCubes() {
+    placeCubes(tiny = false) {
         const geometry = new THREE.BoxGeometry();
-        const color = 0x60616b;
-        const material = new THREE.MeshPhongMaterial({color: color});
+        const color = 0x939499;
+        const material = new THREE.MeshLambertMaterial({color: color});
         const object = new THREE.Mesh(geometry, material);
         this.add(object);
         object.castShadow = true;
         object.receiveShadow = true;
         this.randomizeObject(object);
-        this.randomizeScale(object, 1.4, 3);
+        if (tiny) this.randomizeScale(object, 0.8, 1.2);
+        else this.randomizeScale(object, 1.4, 3);
         object.rotation.x = randomFloat(0, 360);
         object.rotation.z = randomFloat(0, 360);
-        object.position.z = randomFloat(0.7, 1);
+        if (tiny) object.position.z = randomFloat(0.3, 0.5);
+        else object.position.z = randomFloat(0.7, 1);
     }
 
     placeFloatingCubes() {

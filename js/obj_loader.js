@@ -8,7 +8,9 @@ export const MODELS = {
     grave_cross: null,
     rock_small: null,
     twig: null,
-    twig_2: null
+    twig_2: null,
+    ruins_archway_0: null,
+    ruins_archway_1: null
 };
 
 export function loadAll(onLoad) {
@@ -19,6 +21,8 @@ export function loadAll(onLoad) {
     loadByUrl('models/rock_small.obj', onLoad);
     loadByUrl('models/twig.obj', onLoad);
     loadByUrl('models/twig_2.obj', onLoad);
+    loadByUrl('models/ruins_archway_0.obj', onLoad);
+    loadByUrl('models/ruins_archway_1.obj', onLoad);
 }
 
 function loadByUrl(url, onLoad) {
