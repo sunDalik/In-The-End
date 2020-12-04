@@ -8,7 +8,7 @@ export const chunkSize = 20;
 
 export class Chunk extends THREE.Mesh {
     constructor(x, z) {
-        const geometry = new THREE.PlaneBufferGeometry(chunkSize, chunkSize);
+        const geometry = new THREE.PlaneBufferGeometry(chunkSize + 0.1, chunkSize + 0.1);
         const material = new THREE.MeshPhongMaterial({color: 0xa37c5f, side: THREE.FrontSide});
         super(geometry, material);
         this.receiveShadow = true;
