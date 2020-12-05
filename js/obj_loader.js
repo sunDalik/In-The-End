@@ -1,7 +1,8 @@
-import {OBJLoader} from 'three/examples/jsm/loaders/OBJLoader.js';
+import {OBJLoader} from "three/examples/jsm/loaders/OBJLoader";
 import * as THREE from "three";
 
-export const objLoader = new OBJLoader();
+const objLoader = new OBJLoader();
+
 export const MODELS = {
     bone_skull: null,
     bone_spine: null,

@@ -3,6 +3,7 @@ import {Vector3} from "three";
 import {DIRT_TEXTURE, MODELS} from "./obj_loader";
 import {randomFloat, randomInt} from "./random_utils";
 import {callTimes, getSize} from "./utils";
+import {FallingTree} from "./falling_tree";
 
 export const chunkSize = 20;
 
@@ -52,23 +53,39 @@ export class Chunk extends THREE.Mesh {
     }
 
     placeTwig() {
-        const object = MODELS.twig.clone();
+        let object;
+        const material = new THREE.MeshLambertMaterial({color: 0x948666});
+        if (Math.random() < 0.16) {
+            const geometry = MODELS.twig.clone().geometry;
+            object = new FallingTree(geometry, material);
+        } else {
+            object = MODELS.twig.clone();
+            object.material = material;
+        }
         this.add(object);
-        object.material = new THREE.MeshLambertMaterial({color: 0x948666});
         object.castShadow = true;
         object.receiveShadow = true;
         this.randomizeObject(object);
         this.randomizeScale(object, 0.6, 1.4);
+        if (object.startAnimation) object.startAnimation();
     }
 
     placeTwig2() {
-        const object = MODELS.twig_2.clone();
+        let object;
+        const material = new THREE.MeshLambertMaterial({color: 0x948666});
+        if (Math.random() < 0.16) {
+            const geometry = MODELS.twig_2.clone().geometry;
+            object = new FallingTree(geometry, material);
+        } else {
+            object = MODELS.twig_2.clone();
+            object.material = material;
+        }
         this.add(object);
-        object.material = new THREE.MeshLambertMaterial({color: 0x948666});
         object.castShadow = true;
         object.receiveShadow = true;
         this.randomizeObject(object);
         this.randomizeScale(object, 0.6, 1.4);
+        if (object.startAnimation) object.startAnimation();
     }
 
     placeGrave() {
