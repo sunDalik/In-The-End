@@ -5,7 +5,7 @@ import {randomFloat, randomInt} from "./random_utils";
 import {easeInQuart} from "./utils";
 
 export class Falling extends THREE.Mesh {
-    constructor(geometry, material, animationTime = randomInt(38, 60), detectionRadius = randomFloat(3, 8)) {
+    constructor(geometry, material, animationTime = randomInt(45, 60), detectionRadius = randomFloat(3, 8)) {
         super(geometry, material);
         this.detectionRadius = detectionRadius;
         this.fallenDown = false;

@@ -56,9 +56,9 @@ export class Chunk extends THREE.Mesh {
     placeTwig() {
         let object;
         const material = new THREE.MeshLambertMaterial({color: 0x948666});
-        if (Math.random() < 0.16) {
+        if (Math.random() < 0.25) {
             const geometry = MODELS.twig.clone().geometry;
-            object = new Falling(geometry, material);
+            object = new Falling(geometry, material, randomInt(40, 55));
         } else {
             object = MODELS.twig.clone();
             object.material = material;
@@ -74,7 +74,7 @@ export class Chunk extends THREE.Mesh {
     placeTwig2() {
         let object;
         const material = new THREE.MeshLambertMaterial({color: 0x948666});
-        if (Math.random() < 0.2) {
+        if (Math.random() < 0.25) {
             const geometry = MODELS.twig_2.clone().geometry;
             object = new Falling(geometry, material);
         } else {
@@ -92,7 +92,7 @@ export class Chunk extends THREE.Mesh {
     placeGrave() {
         let object;
         const material = new THREE.MeshPhongMaterial({color: 0x3f404a});
-        if (Math.random() < 0.2) {
+        if (Math.random() < 0.25) {
             const geometry = Math.random() < 0.5 ? MODELS.grave_cross.clone().geometry : MODELS.grave_broken.clone().geometry;
             object = new Falling(geometry, material, randomInt(35, 45));
         } else {
@@ -131,9 +131,9 @@ export class Chunk extends THREE.Mesh {
     placeArch() {
         let object;
         const material = new THREE.MeshPhongMaterial({color: 0x8c8673});
-        if (Math.random() < 0.2) {
+        if (Math.random() < 0.25) {
             const geometry = Math.random() < 0.5 ? MODELS.ruins_archway_0.clone().geometry : MODELS.ruins_archway_1.clone().geometry;
-            object = new Falling(geometry, material, randomInt(60, 75), randomFloat(5, 20));
+            object = new Falling(geometry, material, randomInt(65, 80), randomFloat(6, 20));
         } else {
             object = Math.random() < 0.5 ? MODELS.ruins_archway_0.clone() : MODELS.ruins_archway_1.clone();
             object.material = material;
