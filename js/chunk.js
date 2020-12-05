@@ -4,6 +4,7 @@ import {DIRT_TEXTURE, MODELS} from "./obj_loader";
 import {randomFloat, randomInt} from "./random_utils";
 import {callTimes, getSize} from "./utils";
 import {Falling} from "./falling";
+import {FallingCube} from "./falling_cube";
 
 export const chunkSize = 20;
 
@@ -170,15 +171,21 @@ export class Chunk extends THREE.Mesh {
         const geometry = new THREE.BoxGeometry();
         const color = 0x60616b;
         const material = new THREE.MeshPhongMaterial({color: color});
-        const object = new THREE.Mesh(geometry, material);
+        let object;
+        if (Math.random() < 0.25) {
+            object = new FallingCube(geometry, material);
+            object.receiveShadow = true;
+        } else {
+            object = new THREE.Mesh(geometry, material);
+        }
         this.add(object);
         object.castShadow = true;
-        object.receiveShadow = true;
         this.randomizeObject(object);
         this.randomizeScale(object, 0.8, 1.8);
         object.rotation.x = randomFloat(0, 360);
         object.rotation.z = randomFloat(0, 360);
         object.position.z = randomFloat(6, 11);
+        if (object.startAnimation) object.startAnimation();
     }
 
     randomizeObject(object) {

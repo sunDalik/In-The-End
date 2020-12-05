@@ -40,3 +40,7 @@ export function easeInQuad(time) {
 export function easeInQuart(time) {
     return time * time * time * time;
 }
+
+export function easeInExpo(x) {
+    return x === 0 ? 0 : Math.pow(2, 10 * x - 10);
+}
