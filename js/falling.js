@@ -5,12 +5,12 @@ import {randomFloat, randomInt} from "./random_utils";
 import {easeInQuart} from "./utils";
 
 export class Falling extends THREE.Mesh {
-    constructor(geometry, material) {
+    constructor(geometry, material, animationTime = randomInt(38, 60), detectionRadius = randomFloat(3, 8)) {
         super(geometry, material);
-        this.detectionRadius = randomFloat(3, 8);
+        this.detectionRadius = detectionRadius;
         this.fallenDown = false;
         this.currentAnimationFrame = 0;
-        this.totalAnimationFrames = randomInt(38, 60);
+        this.totalAnimationFrames = animationTime;
     }
 
     startAnimation() {

@@ -94,7 +94,7 @@ export class Chunk extends THREE.Mesh {
         const material = new THREE.MeshPhongMaterial({color: 0x3f404a});
         if (Math.random() < 0.2) {
             const geometry = Math.random() < 0.5 ? MODELS.grave_cross.clone().geometry : MODELS.grave_broken.clone().geometry;
-            object = new Falling(geometry, material);
+            object = new Falling(geometry, material, randomInt(35, 45));
         } else {
             object = Math.random() < 0.5 ? MODELS.grave_cross.clone() : MODELS.grave_broken.clone();
             object.material = material;
@@ -129,13 +129,21 @@ export class Chunk extends THREE.Mesh {
     }
 
     placeArch() {
-        const object = Math.random() < 0.5 ? MODELS.ruins_archway_0.clone() : MODELS.ruins_archway_1.clone();
+        let object;
+        const material = new THREE.MeshPhongMaterial({color: 0x8c8673});
+        if (Math.random() < 0.2) {
+            const geometry = Math.random() < 0.5 ? MODELS.ruins_archway_0.clone().geometry : MODELS.ruins_archway_1.clone().geometry;
+            object = new Falling(geometry, material, randomInt(60, 75), randomFloat(5, 20));
+        } else {
+            object = Math.random() < 0.5 ? MODELS.ruins_archway_0.clone() : MODELS.ruins_archway_1.clone();
+            object.material = material;
+        }
         this.add(object);
-        object.material = new THREE.MeshPhongMaterial({color: 0x8c8673});
         object.castShadow = true;
         object.receiveShadow = true;
         this.randomizeObject(object);
         this.randomizeScale(object, 1, 1.6);
+        if (object.startAnimation) object.startAnimation();
     }
 
     placeOrb() {
