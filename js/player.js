@@ -6,7 +6,7 @@ import {chunkSize} from "./chunk";
 export class Player extends THREE.Mesh {
     constructor(camera) {
         const geometry = new THREE.BoxGeometry();
-        const material = new THREE.MeshPhongMaterial({color: 0xffffff});
+        const material = new THREE.MeshPhongMaterial({color: 0xeeeeee});
         super(geometry, material);
         this.camera = camera;
         this.add(camera);

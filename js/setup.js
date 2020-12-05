@@ -2,7 +2,7 @@ import * as THREE from "three";
 import {Player} from "./player";
 import {chunkSize} from "./chunk";
 import {World} from "./world";
-import {loadAll} from "./obj_loader";
+import {loadAll, loadAllTextures} from "./obj_loader";
 
 export const world = new World();
 const camera = new THREE.PerspectiveCamera(75, window.innerWidth / window.innerHeight, 0.1, 100);
@@ -23,7 +23,9 @@ const player = new Player(camera);
 player.position.x = chunkSize / 2;
 player.position.z = chunkSize / 2;
 
-loadAll(() => world.init(player));
+loadAll(() => {
+    loadAllTextures(() => world.init(player));
+});
 
 
 export function destroyObject(object) {

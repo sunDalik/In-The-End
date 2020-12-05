@@ -1,4 +1,5 @@
 import {OBJLoader} from 'three/examples/jsm/loaders/OBJLoader.js';
+import * as THREE from "three";
 
 export const objLoader = new OBJLoader();
 export const MODELS = {
@@ -13,6 +14,8 @@ export const MODELS = {
     ruins_archway_1: null
 };
 
+export let DIRT_TEXTURE = null;
+
 export function loadAll(onLoad) {
     loadByUrl('models/bone_skull.obj', onLoad);
     loadByUrl('models/bone_spine.obj', onLoad);
@@ -23,6 +26,13 @@ export function loadAll(onLoad) {
     loadByUrl('models/twig_2.obj', onLoad);
     loadByUrl('models/ruins_archway_0.obj', onLoad);
     loadByUrl('models/ruins_archway_1.obj', onLoad);
+}
+
+export function loadAllTextures(onLoad) {
+    new THREE.TextureLoader().load('textures/dirt.jpg', texture => {
+        DIRT_TEXTURE = texture;
+        onLoad();
+    });
 }
 
 function loadByUrl(url, onLoad) {

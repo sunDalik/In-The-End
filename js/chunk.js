@@ -1,6 +1,6 @@
 import * as THREE from "three";
 import {Vector3} from "three";
-import {MODELS} from "./obj_loader";
+import {DIRT_TEXTURE, MODELS} from "./obj_loader";
 import {randomFloat, randomInt} from "./random_utils";
 import {callTimes, getSize} from "./utils";
 
@@ -9,7 +9,7 @@ export const chunkSize = 20;
 export class Chunk extends THREE.Mesh {
     constructor(x, z, layer) {
         const geometry = new THREE.PlaneBufferGeometry(chunkSize + 0.1, chunkSize + 0.1);
-        const material = new THREE.MeshPhongMaterial({color: 0xa37c5f, side: THREE.FrontSide});
+        const material = new THREE.MeshPhongMaterial({color: 0xa37c5f, side: THREE.FrontSide, map: DIRT_TEXTURE});
         super(geometry, material);
         this.receiveShadow = true;
         this.layer = layer;
