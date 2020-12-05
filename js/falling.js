@@ -4,7 +4,7 @@ import {world} from "./setup";
 import {randomFloat, randomInt} from "./random_utils";
 import {easeInQuart} from "./utils";
 
-export class FallingTree extends THREE.Mesh {
+export class Falling extends THREE.Mesh {
     constructor(geometry, material) {
         super(geometry, material);
         this.detectionRadius = randomFloat(3, 8);

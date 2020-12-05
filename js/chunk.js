@@ -3,7 +3,7 @@ import {Vector3} from "three";
 import {DIRT_TEXTURE, MODELS} from "./obj_loader";
 import {randomFloat, randomInt} from "./random_utils";
 import {callTimes, getSize} from "./utils";
-import {FallingTree} from "./falling_tree";
+import {Falling} from "./falling";
 
 export const chunkSize = 20;
 
@@ -57,7 +57,7 @@ export class Chunk extends THREE.Mesh {
         const material = new THREE.MeshLambertMaterial({color: 0x948666});
         if (Math.random() < 0.16) {
             const geometry = MODELS.twig.clone().geometry;
-            object = new FallingTree(geometry, material);
+            object = new Falling(geometry, material);
         } else {
             object = MODELS.twig.clone();
             object.material = material;
@@ -73,9 +73,9 @@ export class Chunk extends THREE.Mesh {
     placeTwig2() {
         let object;
         const material = new THREE.MeshLambertMaterial({color: 0x948666});
-        if (Math.random() < 0.16) {
+        if (Math.random() < 0.2) {
             const geometry = MODELS.twig_2.clone().geometry;
-            object = new FallingTree(geometry, material);
+            object = new Falling(geometry, material);
         } else {
             object = MODELS.twig_2.clone();
             object.material = material;
@@ -89,13 +89,22 @@ export class Chunk extends THREE.Mesh {
     }
 
     placeGrave() {
-        const object = Math.random() < 0.5 ? MODELS.grave_cross.clone() : MODELS.grave_broken.clone();
+        let object;
+        const material = new THREE.MeshPhongMaterial({color: 0x3f404a});
+        if (Math.random() < 0.2) {
+            const geometry = Math.random() < 0.5 ? MODELS.grave_cross.clone().geometry : MODELS.grave_broken.clone().geometry;
+            object = new Falling(geometry, material);
+        } else {
+            object = Math.random() < 0.5 ? MODELS.grave_cross.clone() : MODELS.grave_broken.clone();
+            object.material = material;
+        }
         this.add(object);
         object.material = new THREE.MeshPhongMaterial({color: 0x3f404a});
         object.castShadow = true;
         object.receiveShadow = true;
         this.randomizeObject(object);
         this.randomizeScale(object, 1.1, 1.3);
+        if (object.startAnimation) object.startAnimation();
     }
 
     placeRocks() {
