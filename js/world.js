@@ -93,15 +93,18 @@ export class World extends THREE.Scene {
         }
 
         if (this.layer >= 4 && this.lastLayerPlayerPos !== null) {
-            this.startFlickering = true;
+            this.startDying = true;
         }
-        if (this.startFlickering) {
+        if (this.startDying) {
             if (this.currentDeathTime >= this.blackTime + this.flickTime) {
                 this.ambientLight.intensity = 0;
                 this.playerLight.intensity = 0;
                 this.player.material = new THREE.MeshBasicMaterial({color: 0x090909});
                 this.player.dead = true;
-                this.startFlickering = false;
+                for (const chunk of this.chunks) {
+                    destroyObject(chunk);
+                }
+                this.startDying = false;
             } else if (this.currentDeathTime >= this.blackTime) {
                 this.playerLight.intensity = randomFloat(0.8, 1.4);
                 this.ambientLight.intensity = 0.03;
