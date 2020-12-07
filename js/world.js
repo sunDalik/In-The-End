@@ -80,7 +80,7 @@ export class World extends THREE.Scene {
         this.playerLight.target.position.x = this.playerLight.position.x;
         this.playerLight.target.position.z = this.playerLight.position.z;
 
-        if (this.lastLayerPlayerPos && this.player.position.distanceTo(this.lastLayerPlayerPos) > 10) {
+        if (this.lastLayerPlayerPos && this.player.position.distanceTo(this.lastLayerPlayerPos) > 12) {
             this.lastLayerPlayerPos = null;
             this.layer++;
         } else if (this.lastLayerPlayerPos === null) {

@@ -1,7 +1,7 @@
 import * as THREE from "three";
 import {Euler, Vector3} from "three";
 import {world} from "./setup";
-import {randomFloat, randomInt} from "./random_utils";
+import {randomChoice, randomFloat, randomInt} from "./random_utils";
 import {easeInQuart} from "./utils";
 
 export class Falling extends THREE.Mesh {
@@ -15,6 +15,7 @@ export class Falling extends THREE.Mesh {
 
     startAnimation() {
         this.initRotation = new Euler().copy(this.rotation);
+        this.rotationChange = new Euler(Math.PI / 2 * randomChoice([-1, 1]), 0, 0);
         this.update();
     }
 
@@ -31,7 +32,7 @@ export class Falling extends THREE.Mesh {
         }
 
         if (this.fallenDown && this.currentAnimationFrame < this.totalAnimationFrames) {
-            this.rotation.x = this.initRotation.x + easeInQuart(this.currentAnimationFrame / this.totalAnimationFrames) * Math.PI / 2;
+            this.rotation.x = this.initRotation.x + easeInQuart(this.currentAnimationFrame / this.totalAnimationFrames) * this.rotationChange.x;
             this.currentAnimationFrame++;
         }
 
